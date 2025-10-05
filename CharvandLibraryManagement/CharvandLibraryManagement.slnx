@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="CharvandLibraryManagement.Domain/CharvandLibraryManagement.Domain.csproj" />
+  <Project Path="CharvandLibraryManagement.Infrastructure/CharvandLibraryManagement.Infrastructure.csproj" />
   <Project Path="CharvandLibraryManagement.Test/CharvandLibraryManagement.Test.csproj" />
 </Solution>
