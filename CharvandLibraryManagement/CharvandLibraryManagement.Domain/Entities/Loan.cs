@@ -9,6 +9,7 @@ public class Loan
 	public int MemberId { get; set; }
 	public DateTime LoanDate { get; set; }
 	public DateTime? ReturnDate { get; set; }
-	[NotMapped]
+    public bool IsExclusiveLoan { get; set; }
+    [NotMapped]
 	public int LoanDurationDays { get => ReturnDate.Value.Subtract(LoanDate).Days; }
 }
