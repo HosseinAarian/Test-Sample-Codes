@@ -2,7 +2,7 @@
 
 namespace CharvandLibraryManagement.Test;
 
-public class MemberTests
+public class MemberTests(ITestOutputHelper outputHelper)
 {
     [Fact]
     public void MemberToString_FirstNameAndLastNameAreGiven_FullNameShouldBeReturn()
@@ -37,6 +37,7 @@ public class MemberTests
 
         //Act
         var fullName = member.ToString();
+        outputHelper.WriteLine(fullName);
 
         //Assert
         Assert.StartsWith("Hosein", fullName);

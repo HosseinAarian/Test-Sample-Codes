@@ -3,6 +3,8 @@ using CharvandLibraryManagement.Infrastructure.Factories;
 
 namespace CharvandLibraryManagement.Test;
 
+//For Categorised Tests
+//[Trait("Category", "BookFactory_TypeTests")] Can Be Here
 public class BookfactorytESTS
 {
     private readonly Bookfactory _bookfactory;
@@ -11,6 +13,8 @@ public class BookfactorytESTS
         _bookfactory = new Bookfactory();
     }
 
+    //[Fact(Skip ="Skipping For Any Reason")]
+    //[Trait("Category","BookFactory_TypeTests")]
     [Fact]
     public void CreateBook_IsExclusiveIsTrue_ReturnTypeMustBeExclusiveBook()
     {
@@ -36,6 +40,7 @@ public class BookfactorytESTS
     }
 
     [Fact]
+    //[Trait("Category", "BookFactory_TypeTests")]
     public void CreateBook_IsExclusiveIsFalse_ReturnTypeMustBeStandardBook()
     {
         //Arrange 
