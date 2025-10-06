@@ -8,6 +8,7 @@ public class BookServiceTest
     [Fact]
     public void GetAvailableBooks_ShouldReturnOnlyAvailableBooks()
     {
+        //Fake
         //Arrange
         var fakeRepository = new FakeBookRepository();
         var bookService = new BookService(fakeRepository);
