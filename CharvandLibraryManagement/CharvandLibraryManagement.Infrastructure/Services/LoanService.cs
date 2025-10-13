@@ -8,11 +8,15 @@ public class LoanService : ILoanServices
 {
     private readonly ILoanRepository repository;
     private readonly IBookRepository bookRepository;
+    private readonly IMemberRepository memberRepository;
 
     public LoanService(ILoanRepository repository,
-                       IBookRepository bookRepository)
+                       IBookRepository bookRepository,
+                       IMemberRepository memberRepository)
     {
         this.repository = repository;
+        this.bookRepository = bookRepository;
+        this.memberRepository = memberRepository;
     }
 
     public void LoanBook(StandardBooks book, Member member)
@@ -29,5 +33,14 @@ public class LoanService : ILoanServices
         repository.AddLoan(loan);
         book.AvailableCopies--;
         bookRepository.UpdateBook(book);
+    }
+
+    public bool canLoanBook(Member member)
+    {
+        if (memberRepository.HasOverdueLoans(member.Id))
+        {
+            return false;
+        }
+        return true;
     }
 }

@@ -4,5 +4,6 @@ namespace CharvandLibraryManagement.Domain.Repositories;
 
 public interface IMemberRepository
 {
-    Member GetMemberById();
+    Member GetMemberById(int memberId);
+    bool HasOverdueLoans(int memberId);
 }
