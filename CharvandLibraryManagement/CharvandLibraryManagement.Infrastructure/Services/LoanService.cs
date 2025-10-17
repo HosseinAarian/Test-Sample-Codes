@@ -1,5 +1,6 @@
 ﻿using CharvandLibraryManagement.Domain.Entities;
 using CharvandLibraryManagement.Domain.Repositories;
+using CharvandLibraryManagement.Infrastructure.Exceptions;
 using CharvandLibraryManagement.Infrastructure.Services.Contracts;
 
 namespace CharvandLibraryManagement.Infrastructure.Services;
@@ -21,6 +22,11 @@ public class LoanService : ILoanServices
 
     public void LoanBook(StandardBooks book, Member member)
     {
+        var existingBook = bookRepository.GetById(book.Id);
+
+        if (existingBook is null || !existingBook.IsAvailable)
+            throw new BookIsNotAvailableException();
+
         var loan = new Loan
         {
             BookId = book.Id,

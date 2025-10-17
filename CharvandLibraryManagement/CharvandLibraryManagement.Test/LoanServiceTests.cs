@@ -1,8 +1,11 @@
 ﻿using CharvandLibraryManagement.Domain.Entities;
+using CharvandLibraryManagement.Domain.Repositories;
+using CharvandLibraryManagement.Infrastructure.Exceptions;
 using CharvandLibraryManagement.Infrastructure.Services;
 using CharvandLibraryManagement.Test.Dummies;
 using CharvandLibraryManagement.Test.Fakes;
 using CharvandLibraryManagement.Test.Stubs;
+using Moq;
 
 namespace CharvandLibraryManagement.Test;
 
@@ -98,5 +101,79 @@ public class LoanServiceTests
 
         //Assert
         Assert.True(result);
+    }
+
+    //Moq
+    [Fact]
+    public void LoanBook_ShouldCallAddLoanAndUpdateBook_WithCorrectOverloads()
+    {
+        //Arrange
+        var mockLoanRepository = new Mock<ILoanRepository>();
+        var mockBookRepository = new Mock<IBookRepository>();
+        var dummyMemberRepository = new Mock<IMemberRepository>();
+
+        var book = new StandardBooks
+        {
+            Id = 1,
+            Title = "Mock book",
+            Author = "Mock Author",
+            PublishDate = DateTime.Now.AddYears(-1),
+            AvailableCopies = 3
+        };
+
+        var member = new Member
+        {
+            Id = 1,
+            FirstName = "Hossein",
+            LastName = "Aryan",
+        };
+
+        mockBookRepository.Setup(repo => repo.GetById(1)).Returns(book);
+
+        var loanService = new LoanService(mockLoanRepository.Object, mockBookRepository.Object, dummyMemberRepository.Object);
+
+        //Act
+        loanService.LoanBook(book, member);
+
+        //Assert
+        mockLoanRepository.Verify(repo => repo.AddLoan(It.Is<Loan>(l =>
+        l.BookId == 1 && l.MemberId == 1)), Times.Once);
+
+        mockBookRepository.Verify(repo => repo.UpdateBook(It.Is<StandardBooks>(b =>
+        b.Id == 1 &&
+        b.AvailableCopies == 2)), Times.Once);
+    }
+
+    [Fact]
+    public void LoanBook_WithZeroAvailableCopies_ShouldThrowBookIsNotAvailableException()
+    {
+        //Arrange
+        var mockLoanRepository = new Mock<ILoanRepository>();
+        var mockBookRepository = new Mock<IBookRepository>();
+        var dummyMemberRepository = new Mock<IMemberRepository>();
+
+        var book = new StandardBooks
+        {
+            Id = 1,
+            Title = "Mock book",
+            Author = "Mock Author",
+            PublishDate = DateTime.Now.AddYears(-1),
+            AvailableCopies = 0
+        };
+
+        var member = new Member
+        {
+            Id = 1,
+            FirstName = "Hossein",
+            LastName = "Aryan",
+        };
+
+        mockBookRepository.Setup(repo => repo.GetById(1)).Returns(book);
+
+        var loanService = new LoanService(mockLoanRepository.Object, mockBookRepository.Object, dummyMemberRepository.Object);
+
+        //Act And Assert
+        Assert.Throws<BookIsNotAvailableException>(() => loanService.LoanBook(book, member));
+        mockLoanRepository.Verify(repo => repo.AddLoan(It.IsAny<Loan>()), Times.Never);
     }
 }
