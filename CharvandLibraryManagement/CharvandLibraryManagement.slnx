@@ -2,4 +2,5 @@
   <Project Path="CharvandLibraryManagement.Domain/CharvandLibraryManagement.Domain.csproj" />
   <Project Path="CharvandLibraryManagement.Infrastructure/CharvandLibraryManagement.Infrastructure.csproj" />
   <Project Path="CharvandLibraryManagement.Test/CharvandLibraryManagement.Test.csproj" />
+  <Project Path="LibraryManagementAPI/LibraryManagementAPI.csproj" Id="271d6c9f-5e71-4039-a1d4-6da155a8c76a" />
 </Solution>
